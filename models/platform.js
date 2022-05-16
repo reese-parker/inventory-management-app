@@ -11,4 +11,4 @@ PlatformSchema.virtual("url").get(function () {
   return "/platform/" + this._id;
 });
 
-module.exports = mongoose.model("Platform", PlatformSchema);
+module.exports = mongoose.model("platform", PlatformSchema);
