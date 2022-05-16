@@ -2,8 +2,8 @@ var express = require("express");
 const res = require("express/lib/response");
 var router = express.Router();
 
-router.get("/", function (req, res, next) {
-  res.send("all games");
-});
+var game_controller = require("../controllers/gameController")
+
+router.get("/", game_controller.game_list);
 
 module.exports = router;
