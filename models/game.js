@@ -1,4 +1,5 @@
 var mongoose = require("mongoose");
+var dayjs = require("dayjs")
 
 var Schema = mongoose.Schema;
 
@@ -15,6 +16,10 @@ var GameSchema = new Schema({
 GameSchema.virtual("url").get(function () {
   return "/games/" + this._id;
 });
+
+GameSchema.virtual("release_date_formatted").get(function () {
+  return dayjs(this.release_date).format('YYYY-MM-DD')
+})
 
 
 module.exports = mongoose.model("game", GameSchema);
