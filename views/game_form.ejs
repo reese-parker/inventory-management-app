@@ -12,37 +12,40 @@
               <form action="" method="post">
              <label for="name">Name: </label>
              <input class="form-control" type="text" id="name" required name="name"
-             value="<%- game !== undefined ? game.name : '' %>">
+             value="<%= game !== undefined ? game.name : '' %>">
             <br>
              <label for="platform">Platform:</label>
              <select class="form-control" id="platform" required name="platform"
-             value="<%- game !== undefined ? game.platform.name : '' %>"
              >
+             <option disabled selected value> -- select a platform -- </option>
                  <% platforms.forEach(platform => { %>
-                <option value=<%= platform._id %> ><%= platform.name %> </option>
+                <option value=<%= platform._id %>
+                   ><%= platform.name %> </option>
                  <% }) %>
              </select>
              <br>
              <label  for="description">Description:</label>
              <input class="form-control" type="text" id="description" required name="description"
-             value="<%- game !== undefined ? game.description : '' %>">
+             value="<%= game !== undefined ? game.description : '' %>">
              <br>
              <label for="release_date">Release date:</label>
              <input type="date" required id="release_date" name="release_date" 
-             value=<%- game !== undefined ? game.release_date_formatted : '' %>>
+             value=<%= game !== undefined ? game.release_date_formatted : '' %>>
              <br>
              <br>
              <label for="price">Price:</label>
              <input type="number" id="price" required name="price" step="0.01"
-             value=<%- game !== undefined ? game.price : '' %>>
+             value=<%= game !== undefined ? game.price : '' %>>
              <br>
              <br>
              <label for="stock">Stock:</label>
              <input type="number" id="stock" required name="stock"
-             value=<%- game !== undefined ? game.stock : '' %>>
+             value=<%= game !== undefined ? game.stock : '' %>>
              <br>
              <button class="btn btn-primary" type="submit">Submit</button>
          </form>
+
+         
 
         
          
