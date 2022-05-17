@@ -3,6 +3,7 @@ var Game = require("../models/game");
 var Platform = require("../models/platform");
 var async = require("async");
 const { body } = require("express-validator");
+const res = require("express/lib/response");
 
 // Read all games
 
@@ -72,14 +73,22 @@ exports.game_create_post = [
 
 // Update game form GET request
 
-exports.game_update_get = async function (req, res, next) {
-  var game_details = await Game.findById(req.params.id);
-  var list_platforms = await Platform.find();
-  res.render("game_form", {
-    title: "Update game",
-    game: game_details,
-    platforms: list_platforms,
-  });
+exports.game_update_get = function (req, res, next) {
+
+  async.parallel({
+    game_details : function(callback) { Game.findById(req.params.id).populate("platform").exec(callback)},
+    platforms_list : function(callback) { Platform.find().exec(callback) } 
+  },
+  function (err, results) {
+    if (err) {
+      return next(err)
+    }
+    res.render("game_form", {
+      title: `Update ${results.game_details.name} - ${results.game_details.platform.name}`,
+      game: results.game_details,
+      platforms: results.platforms_list,
+    })
+  })
 };
 
 // Update game POST request
@@ -111,3 +120,23 @@ exports.game_update_post = [
     );
   },
 ];
+
+// Delete game GET request
+
+exports.game_delete_get = function (req, res, next) {
+  Game.findById(req.params.id).populate("platform").exec(function (err, results) {
+    if (err) {
+      return next(err);
+    }
+    res.render("game_delete", { game: results });
+  });
+};
+
+// Delete game POST request
+
+exports.game_delete_post = function (req, res, next) {
+  Game.findByIdAndRemove(req.params.id, function(err) {
+    if (err) {return next(err)}
+    res.redirect("/games")
+  })
+}

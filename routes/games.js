@@ -14,6 +14,10 @@ router.get("/:id/update", game_controller.game_update_get);
 
 router.post("/:id/update", game_controller.game_update_post);
 
+router.get("/:id/delete", game_controller.game_delete_get);
+
+router.post("/:id/delete", game_controller.game_delete_post);
+
 router.get("/:id", game_controller.game_detail);
 
 module.exports = router;
