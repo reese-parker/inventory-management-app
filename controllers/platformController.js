@@ -67,11 +67,15 @@ exports.platform_create_post = [
 
 // Update platform GET request
 
-exports.platform_update_get = async function (req, res, next) {
-  var platform_details = await Platform.findById(req.params.id);
-  res.render("platform_form", {
-    title: "Update platform",
-    platform: platform_details,
+exports.platform_update_get = function (req, res, next) {
+  Platform.findById(req.params.id).exec(function (err, results) {
+    if (err) {
+      return next(err);
+    }
+    res.render("platform_form", {
+      title: "Update platform",
+      platform: results,
+    });
   });
 };
 
@@ -100,3 +104,38 @@ exports.platform_update_post = [
     );
   },
 ];
+
+// Delete platform GET request
+
+exports.platform_delete_get = function (req, res, next) {
+  async.series(
+    {
+      platform: function (callback) {
+        Platform.findById(req.params.id).exec(callback);
+      },
+      games: function (callback) {
+        Game.find({ platform: req.params.id }).exec(callback);
+      },
+    },
+    function (err, results) {
+      if (err) {
+        return next(err);
+      }
+      res.render("platform_delete", {
+        platform: results.platform,
+        games: results.games,
+      });
+    }
+  );
+};
+
+// Delete platform POST request
+
+exports.platform_delete_post = function (req, res, next) {
+  Platform.findByIdAndRemove(req.params.id, function (err) {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/platforms")
+  });
+};
