@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <%- include('./partials/head.ejs') %>
+
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <%- include('./partials/sidebar.ejs') %>
+        <div class="col-sm-9">
+          <h1>Add game </h1>
+
+              <form action="" method="post">
+             <label for="name">Name: </label>
+             <input class="form-control" type="text" id="name" required name="name">
+            <br>
+             <label for="platform">Platform:</label>
+             <select class="form-control" id="platform" required name="platform">
+                 <% platforms.forEach(platform => { %>
+                <option value=<%= platform._id %> ><%= platform.name %> </option>
+                 <% }) %>
+             </select>
+             <br>
+             <label  for="description">Description:</label>
+             <input class="form-control" type="text" id="description" required name="description">
+             <br>
+             <label for="release_date">Release date:</label>
+             <input type="date" required id="release_date" name="release_date" >
+             <br>
+             <br>
+             <label for="price">Price:</label>
+             <input type="number" id="price" required name="price" step="0.01">
+             <br>
+             <br>
+             <label for="stock">Stock:</label>
+             <input type="number" id="stock" required name="stock">
+             <br>
+             <button class="btn btn-primary" type="submit">Submit</button>
+         </form>
+
+        
+         
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
