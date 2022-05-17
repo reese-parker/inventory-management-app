@@ -13,7 +13,7 @@ var GameSchema = new Schema({
 
 
 GameSchema.virtual("url").get(function () {
-  return "/game/" + this._id;
+  return "/games/" + this._id;
 });
 
 
