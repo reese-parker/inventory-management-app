@@ -7,22 +7,24 @@
       <div class="row">
         <%- include('./partials/sidebar.ejs') %>
         <div class="col-sm-9">
-          <h1>Add platform </h1>
+          <h1><%= title %></h1>
 
-              <form action="" method="post">
-             <label for="name">Name: </label>
-             <input class="form-control" type="text" id="name" required name="name">
-            <br>
-           
-             <label  for="description">Description:</label>
-             <input class="form-control" type="text" id="description" required name="description">
-             <br>
-           
-             <button class="btn btn-primary" type="submit">Submit</button>
-         </form>
+          <form action="" method="post">
+            <label for="name">Name: </label>
+            <input class="form-control" type="text" id="name" required
+            name="name"
+    
+             value="<%- platform !== undefined ? platform.name : '' %>" >
+            <br />
 
-        
-         
+            <label for="description">Description:</label>
+            <input class="form-control" type="text" id="description" required
+            name="description"
+            value="<%- platform !== undefined ? platform.description : '' %>" > 
+            <br />
+
+            <button class="btn btn-primary" type="submit">Save</button>
+          </form>
         </div>
       </div>
     </div>
