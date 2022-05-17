@@ -11,6 +11,7 @@ exports.game_list = function (req, res, next) {
       res.render("game_list", { game_list: results });
     });
 };
+
 exports.game_detail = function (req, res, next) {
   Game.findById(req.params.id)
     .populate("platform")

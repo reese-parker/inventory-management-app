@@ -5,5 +5,6 @@ var router = express.Router();
 var platform_controller = require("../controllers/platformController");
 
 router.get("/", platform_controller.platform_list);
+router.get("/:id", platform_controller.platform_detail);
 
 module.exports = router;

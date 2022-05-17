@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <%- include('./partials/head.ejs') %>
+
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <%- include('./partials/sidebar.ejs') %>
+        <div class="col-sm-9">
+          <h1><%= platform.name %> </h1>
+         
+            <% if (platform !== undefined) { %> 
+                <p>Platform: <%= platform.name %> </p>
+                <p>Description: <%= platform.description %> </p>
+
+
+                <p>Games:
+                <ul>
+                    <% games.forEach(game => { %>
+                        <li><a href=<%= game.url %> ><%= game.name %></a> </li>
+                       <% }) %> </p>
+                   <% } %>
+                </ul> 
+         
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
