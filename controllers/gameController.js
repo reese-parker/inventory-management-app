@@ -1,55 +1,26 @@
-const { response } = require("../app");
 var Game = require("../models/game");
 var Platform = require("../models/platform");
 var async = require("async");
 const { body } = require("express-validator");
-const res = require("express/lib/response");
-
-// Read all games
-
-exports.game_list = function (req, res, next) {
-  Game.find({}, "name platform")
-    .populate("platform")
-    .exec(function (err, results) {
-      if (err) {
-        return next(err);
-      }
-      res.render("game_list", { game_list: results });
-    });
-};
-
-// Read game
-
-exports.game_detail = function (req, res, next) {
-  Game.findById(req.params.id)
-    .populate("platform")
-    .exec(function (err, results) {
-      if (err) {
-        return next(err);
-      }
-      console.log(results);
-      res.render("game_detail", { game: results });
-    });
-};
 
 // Create game form GET request
 
-exports.game_create_get = function (req, res, next) {
-  Platform.find().exec(function (err, list_platforms) {
-    if (err) {
-      return next(err);
+exports.createGameGet = function (req, res, next) {
+  Platform.find().exec(function (error, platforms) {
+    if (error) {
+      return next(error);
     }
     res.render("game_form", {
       title: "Add game",
       game: undefined,
-      platforms: list_platforms,
+      platforms: platforms,
     });
   });
 };
 
 // Create game form POST request
 
-exports.game_create_post = [
+exports.createGamePost = [
   body("name").trim(),
   body("description").trim(),
   function (req, res, next) {
@@ -61,39 +32,69 @@ exports.game_create_post = [
       price: req.body.price,
       stock: req.body.stock,
     });
-
-    game.save(function (err) {
-      if (err) {
-        return next(err);
+    game.save(function (error) {
+      if (error) {
+        return next(error);
       }
       res.redirect(game.url);
     });
   },
 ];
 
+// Read all games
+
+exports.listGamesGet = function (req, res, next) {
+  Game.find({}, "name platform")
+    .populate("platform")
+    .exec(function (error, results) {
+      if (error) {
+        return next(error);
+      }
+      res.render("game_list", { games: results });
+    });
+};
+
+// Read game
+
+exports.gameDetailsGet = function (req, res, next) {
+  Game.findById(req.params.id)
+    .populate("platform")
+    .exec(function (error, results) {
+      if (error) {
+        return next(error);
+      }
+      res.render("game_detail", { game: results });
+    });
+};
+
 // Update game form GET request
 
-exports.game_update_get = function (req, res, next) {
-
-  async.parallel({
-    game_details : function(callback) { Game.findById(req.params.id).populate("platform").exec(callback)},
-    platforms_list : function(callback) { Platform.find().exec(callback) } 
-  },
-  function (err, results) {
-    if (err) {
-      return next(err)
+exports.updateGameGet = function (req, res, next) {
+  async.parallel(
+    {
+      game: function (callback) {
+        Game.findById(req.params.id).populate("platform").exec(callback);
+      },
+      platforms: function (callback) {
+        Platform.find().exec(callback);
+      },
+    },
+    function (error, results) {
+      if (error) {
+        return next(error);
+      }
+      res.render("game_form", {
+        title: `Update ${results.game.name} - ${results.game.platform.name}`,
+        game: results.game,
+        platforms: results.platforms,
+      });
     }
-    res.render("game_form", {
-      title: `Update ${results.game_details.name} - ${results.game_details.platform.name}`,
-      game: results.game_details,
-      platforms: results.platforms_list,
-    })
-  })
+  );
 };
 
 // Update game POST request
 
-exports.game_update_post = [
+exports.updateGamePost = [
   body("name").trim(),
   body("description").trim(),
   function (req, res, next) {
@@ -106,16 +107,15 @@ exports.game_update_post = [
       stock: req.body.stock,
       _id: req.params.id,
     });
-
     Game.findByIdAndUpdate(
       req.params.id,
       updatedGame,
       {},
-      function (err, results) {
-        if (err) {
-          return next(err);
+      function (error, game) {
+        if (error) {
+          return next(error);
         }
-        res.redirect(results.url);
+        res.redirect(game.url);
       }
     );
   },
@@ -123,20 +123,24 @@ exports.game_update_post = [
 
 // Delete game GET request
 
-exports.game_delete_get = function (req, res, next) {
-  Game.findById(req.params.id).populate("platform").exec(function (err, results) {
-    if (err) {
-      return next(err);
-    }
-    res.render("game_delete", { game: results });
-  });
+exports.deleteGameGet = function (req, res, next) {
+  Game.findById(req.params.id)
+    .populate("platform")
+    .exec(function (error, game) {
+      if (error) {
+        return next(error);
+      }
+      res.render("game_delete", { game: game });
+    });
 };
 
 // Delete game POST request
 
-exports.game_delete_post = function (req, res, next) {
-  Game.findByIdAndRemove(req.params.id, function(err) {
-    if (err) {return next(err)}
-    res.redirect("/games")
-  })
-}
+exports.deleteGamePost = function (req, res, next) {
+  Game.findByIdAndRemove(req.params.id, function (error) {
+    if (error) {
+      return next(error);
+    }
+    res.redirect("/games");
+  });
+};

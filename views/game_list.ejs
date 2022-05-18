@@ -9,7 +9,7 @@
         <div class="col-sm-9">
           <h1>Games</h1>
           <ul>
-            <% if (game_list.length > 0) { %> <% game_list.forEach(game => { %>
+            <% if (games.length > 0) { %> <% games.forEach(game => { %>
             <li>
               <a href=<%= game.url %> ><%= game.name %> - <%= game.platform.name %>  </a>
             </li>

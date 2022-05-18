@@ -1,4 +1,3 @@
-const { response } = require("../app");
 var Platform = require("../models/platform");
 var Game = require("../models/game");
 var async = require("async");
