@@ -1,11 +1,18 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
+  <%- include('./partials/head.ejs') %>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <div class="container-fluid">
+      <div class="row">
+        <%- include('./partials/sidebar.ejs') %>
+        <div class="col-sm-9">
+          <h1>Inventory</h1>
+          <hr>
+          <a href="/games">View all games</a>
+          <br>
+          <a href="/platforms">View all platforms</a>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
