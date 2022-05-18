@@ -3,20 +3,46 @@ var Game = require("../models/game");
 var async = require("async");
 const { body } = require("express-validator");
 
+// Create platform GET request
+
+exports.createPlatformGet = function (req, res, next) {
+  res.render("platform_form", { title: "Add platform", platform: undefined });
+};
+
+// Create platform POST request
+
+exports.createPlatformPost = [
+  body("name").trim(),
+  body("description").trim(),
+  function (req, res, next) {
+    var platform = new Platform({
+      name: req.body.name,
+      description: req.body.description,
+    });
+
+    platform.save(function (error) {
+      if (error) {
+        return next(error);
+      }
+      res.redirect(platform.url);
+    });
+  },
+];
+
 // Read all platforms
 
-exports.platform_list = function (req, res, next) {
-  Platform.find({}, "name").exec(function (err, list_platforms) {
-    if (err) {
-      return next(err);
+exports.listPlatformsGet = function (req, res, next) {
+  Platform.find({}, "name").exec(function (error, platforms) {
+    if (error) {
+      return next(error);
     }
-    res.render("platform_list", { platform_list: list_platforms });
+    res.render("platform_list", { platforms: platforms });
   });
 };
 
 // Read platform
 
-exports.platform_detail = function (req, res, next) {
+exports.platformDetailsGet = function (req, res, next) {
   async.parallel(
     {
       platform: function (callback) {
@@ -26,9 +52,9 @@ exports.platform_detail = function (req, res, next) {
         Game.find({ platform: req.params.id }).exec(callback);
       },
     },
-    function (err, results) {
-      if (err) {
-        return next(err);
+    function (error, results) {
+      if (error) {
+        return next(error);
       }
       res.render("platform_detail", {
         platform: results.platform,
@@ -38,49 +64,23 @@ exports.platform_detail = function (req, res, next) {
   );
 };
 
-// Create platform GET request
-
-exports.platform_create_get = function (req, res, next) {
-  res.render("platform_form", { title: "Add platform", platform: undefined });
-};
-
-// Create platform POST request
-
-exports.platform_create_post = [
-  body("name").trim(),
-  body("description").trim(),
-  function (req, res, next) {
-    var platform = new Platform({
-      name: req.body.name,
-      description: req.body.description,
-    });
-
-    platform.save(function (err) {
-      if (err) {
-        return next(err);
-      }
-      res.redirect(platform.url);
-    });
-  },
-];
-
 // Update platform GET request
 
-exports.platform_update_get = function (req, res, next) {
-  Platform.findById(req.params.id).exec(function (err, results) {
-    if (err) {
-      return next(err);
+exports.updatePlatformGet = function (req, res, next) {
+  Platform.findById(req.params.id).exec(function (error, platform) {
+    if (error) {
+      return next(error);
     }
     res.render("platform_form", {
       title: "Update platform",
-      platform: results,
+      platform: platform,
     });
   });
 };
 
 // Update platform POST request
 
-exports.platform_update_post = [
+exports.updatePlatformPost = [
   body("name").trim(),
   body("description").trim(),
   function (req, res, next) {
@@ -89,16 +89,15 @@ exports.platform_update_post = [
       description: req.body.description,
       _id: req.params.id,
     });
-
     Platform.findByIdAndUpdate(
       req.params.id,
       updatedPlatform,
       {},
-      function (err, results) {
-        if (err) {
-          return next(err);
+      function (error, platform) {
+        if (error) {
+          return next(error);
         }
-        res.redirect(results.url);
+        res.redirect(platform.url);
       }
     );
   },
@@ -106,7 +105,7 @@ exports.platform_update_post = [
 
 // Delete platform GET request
 
-exports.platform_delete_get = function (req, res, next) {
+exports.deletePlatformGet = function (req, res, next) {
   async.series(
     {
       platform: function (callback) {
@@ -116,9 +115,9 @@ exports.platform_delete_get = function (req, res, next) {
         Game.find({ platform: req.params.id }).exec(callback);
       },
     },
-    function (err, results) {
-      if (err) {
-        return next(err);
+    function (error, results) {
+      if (error) {
+        return next(error);
       }
       res.render("platform_delete", {
         platform: results.platform,
@@ -130,11 +129,11 @@ exports.platform_delete_get = function (req, res, next) {
 
 // Delete platform POST request
 
-exports.platform_delete_post = function (req, res, next) {
-  Platform.findByIdAndRemove(req.params.id, function (err) {
-    if (err) {
-      return next(err);
+exports.deletePlatformPost = function (req, res, next) {
+  Platform.findByIdAndRemove(req.params.id, function (error) {
+    if (error) {
+      return next(error);
     }
-    res.redirect("/platforms")
+    res.redirect("/platforms");
   });
 };

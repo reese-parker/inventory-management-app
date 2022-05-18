@@ -1,23 +1,22 @@
 var express = require("express");
-const res = require("express/lib/response");
 var router = express.Router();
 
-var platform_controller = require("../controllers/platformController");
+var platformController = require("../controllers/platformController");
 
-router.get("/", platform_controller.platform_list);
+router.get("/", platformController.listPlatformsGet);
 
-router.get("/create", platform_controller.platform_create_get);
+router.get("/create", platformController.createPlatformGet);
 
-router.post("/create", platform_controller.platform_create_post);
+router.post("/create", platformController.createPlatformPost);
 
-router.get("/:id/update", platform_controller.platform_update_get);
+router.get("/:id/update", platformController.updatePlatformGet);
 
-router.post("/:id/update", platform_controller.platform_update_post);
+router.post("/:id/update", platformController.updatePlatformPost);
 
-router.get("/:id/delete", platform_controller.platform_delete_get);
+router.get("/:id/delete", platformController.deletePlatformGet);
 
-router.post("/:id/delete", platform_controller.platform_delete_post);
+router.post("/:id/delete", platformController.deletePlatformPost);
 
-router.get("/:id", platform_controller.platform_detail);
+router.get("/:id", platformController.platformDetailsGet);
 
 module.exports = router;
