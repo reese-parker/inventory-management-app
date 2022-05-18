@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
   <%- include('./partials/head.ejs') %>
-
   <body>
     <div class="container-fluid">
       <div class="row">
         <%- include('./partials/sidebar.ejs') %>
         <div class="col-sm-9">
           <h1>Platforms</h1>
+          <hr>
           <ul>
             <% if (platforms.length > 0) { %> <% platforms.forEach(platform => { %>
             <li>
