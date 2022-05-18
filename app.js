@@ -4,12 +4,13 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var mongoose = require("mongoose");
-require('dotenv').config()
+require("dotenv").config();
+var compression = require("compression");
+var helmet = require('helmet');
 
 var indexRouter = require("./routes/index");
 var platformsRouter = require("./routes/platforms");
 var gamesRouter = require("./routes/games");
-
 
 var app = express();
 
@@ -22,16 +23,17 @@ db.on("error", console.error.bind(console, "MongoDB connection error:"));
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
+app.use(helmet());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(compression());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/platforms", platformsRouter);
 app.use("/games", gamesRouter);
-
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
