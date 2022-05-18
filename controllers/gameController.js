@@ -84,7 +84,7 @@ exports.updateGameGet = function (req, res, next) {
         return next(error);
       }
       res.render("game_form", {
-        title: `Update ${results.game.name} - ${results.game.platform.name}`,
+        title: `${results.game.name} - ${results.game.platform.name}`,
         game: results.game,
         platforms: results.platforms,
       });

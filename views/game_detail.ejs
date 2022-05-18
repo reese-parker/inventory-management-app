@@ -1,23 +1,20 @@
 <!DOCTYPE html>
 <html>
   <%- include('./partials/head.ejs') %>
-
   <body>
     <div class="container-fluid">
       <div class="row">
         <%- include('./partials/sidebar.ejs') %>
         <div class="col-sm-9">
-          <h1><%= game.name %> </h1>
-         
+         <h1><%= game.name %> - <%= game.platform.name %>  </h1>
+         <hr>
             <% if (game !== undefined) { %> 
-                <p>Title: <%= game.name %> - <%= game.platform.name %> </p>
-                <p>Description: <%= game.description %> </p>
-                <p>Release date: <%= game.release_date %> </p>
-                <p>Price: $<%= game.price %> </p>
-                <p>Stock quanitity: <%= game.stock %> </p>
+                <p><b>Description:</b> <i><%= game.description %></i> </p>
+                <p><b>Release date:</b> <%= game.release_date_formatted %> </p>
+                <p><b>Price:</b> $<%= game.price %> </p>
+                <p><b>Stock level:</b> <%= game.stock %> </p>
             <% } %>
-         
-
+      
             <hr>
               
             <a href=<%= game.url+"/update" %> >Update game</a>

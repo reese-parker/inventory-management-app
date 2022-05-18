@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
   <%- include('./partials/head.ejs') %>
-
   <body>
     <div class="container-fluid">
       <div class="row">
         <%- include('./partials/sidebar.ejs') %>
         <div class="col-sm-9">
-          <h1>Games</h1>
-          <ul>
+          <h1 >Games</h1>
+          <hr>
+          <ul >
             <% if (games.length > 0) { %> <% games.forEach(game => { %>
             <li>
               <a href=<%= game.url %> ><%= game.name %> - <%= game.platform.name %>  </a>

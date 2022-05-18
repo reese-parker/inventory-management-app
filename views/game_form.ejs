@@ -7,16 +7,17 @@
       <div class="row">
         <%- include('./partials/sidebar.ejs') %>
         <div class="col-sm-9">
-          <h1><%= title %> </h1>
+          <h1><%= title %>  </h1>
+          <hr>
+            <form action="" method="post">
 
-              <form action="" method="post">
-             <label for="name">Name: </label>
+             <label for="name"><b>Name:</b> </label>
              <input class="form-control" type="text" id="name" required name="name"
              value="<%= game !== undefined ? game.name : '' %>">
-            <br>
-             <label for="platform">Platform:</label>
-             <select class="form-control" id="platform" required name="platform"
-             >
+             <br>
+
+             <label for="platform"><b>Platform:</b></label>
+             <select class="form-control" id="platform" required name="platform">
              <option disabled selected value> -- select a platform -- </option>
                  <% platforms.forEach(platform => { %>
                 <option value=<%= platform._id %>
@@ -24,31 +25,37 @@
                  <% }) %>
              </select>
              <br>
-             <label  for="description">Description:</label>
-             <input class="form-control" type="text" id="description" required name="description"
-             value="<%= game !== undefined ? game.description : '' %>">
+
+             <label for="description"><b>Description:</b></label>
+             <textarea class="form-control" type="text" id="description" required name="description"><%= game !== undefined ? game.description : '' %></textarea>
              <br>
-             <label for="release_date">Release date:</label>
+
+             <label for="release_date"><b>Release date:</b></label>
              <input type="date" required id="release_date" name="release_date" 
              value=<%= game !== undefined ? game.release_date_formatted : '' %>>
              <br>
+
              <br>
-             <label for="price">Price:</label>
+             <label for="price"><b>Price:</b></label>
              <input type="number" id="price" required name="price" step="0.01"
              value=<%= game !== undefined ? game.price : '' %>>
              <br>
+
              <br>
-             <label for="stock">Stock:</label>
+             <label for="stock"><b>Stock:</b></label>
              <input type="number" id="stock" required name="stock"
              value=<%= game !== undefined ? game.stock : '' %>>
              <br>
-             <button class="btn btn-primary" type="submit">Submit</button>
+             <hr>
+
+             <button class="btn btn-primary" type="submit">Save</button>
+             <br>
+             <br>
+             <% if (game !== undefined) { %>
+              <a href=<%= game.url %> >Back to game details</a>
+             <% } %>
+             
          </form>
-
-         
-
-        
-         
         </div>
       </div>
     </div>
