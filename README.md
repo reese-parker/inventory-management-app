@@ -1,6 +1,6 @@
 # Inventory Management App
 
-[Use the app here](https://cryptic-inlet-59560.herokuapp.com/)
+[Use the app here.](https://cryptic-inlet-59560.herokuapp.com/)
 
 
 ## Description
